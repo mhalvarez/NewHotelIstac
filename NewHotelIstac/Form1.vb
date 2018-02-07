@@ -469,6 +469,8 @@ Public Class Istac
 
             While DB.mDbLector.Read
 
+
+
                 If mPrimerRegistro Then
                     mPrimerRegistro = False
                     Me.mControlProvincia = DB.mDbLector.Item("NACI_CODI")
