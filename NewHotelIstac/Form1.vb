@@ -224,30 +224,33 @@ Public Class Istac
 
 
             While DB.mDbLector.Read
+                If CDate(DB.mDbLector.Item("EDTA_DATA")).Month = Me.DateTimePickerHasta.Value.Month Then
 
-                If mPrimerRegistro Then
-                    mPrimerRegistro = False
-                    Me.mControlProvincia = DB.mDbLector.Item(3).ToString
-                    Me.mAnadeResidencia = True
-                    Me.mControlResidencia = 0
+                    If mPrimerRegistro Then
+                        mPrimerRegistro = False
+                        Me.mControlProvincia = DB.mDbLector.Item(3).ToString
+                        Me.mAnadeResidencia = True
+                        Me.mControlResidencia = 0
 
-                Else
-                    Me.mControlResidencia = 1
+                    Else
+                        Me.mControlResidencia = 1
+                    End If
+
+                    If Me.mControlProvincia <> DB.mDbLector.Item(3).ToString Then
+                        Me.mControlProvincia = DB.mDbLector.Item(3).ToString
+                        Me.mAnadeResidencia = True
+
+                    End If
+
+
+                    Me.GrabaXmlEspana(DB.mDbLector.Item(4).ToString.Trim, Format(DB.mDbLector.Item(0), "dd"), CInt(DB.mDbLector.Item("LLEGADAS")), CInt(DB.mDbLector.Item("SALIDAS")), CInt(DB.mDbLector.Item("PERNOCTACIONES")), mAnadeResidencia)
+                    Me.ListBoxDebug.Items.Add(DB.mDbLector.Item(0).ToString.Trim & " " & DB.mDbLector.Item(1).ToString.Trim & " " & DB.mDbLector.Item(2).ToString.Trim & " " & DB.mDbLector.Item(3).ToString.PadRight(25, " ") & DB.mDbLector.Item(4).ToString.Trim & " " & DB.mDbLector.Item("LLEGADAS").ToString.PadLeft(3, " ") & " " & DB.mDbLector.Item("SALIDAS").ToString.PadLeft(3, " ") & " " & DB.mDbLector.Item("PERNOCTACIONES").ToString.PadLeft(3, " ") & " Repernoctaciones = " & Me.Mpernoctaciones)
+
+                    If hayerror Then
+                        Exit While
+                    End If
                 End If
 
-                If Me.mControlProvincia <> DB.mDbLector.Item(3).ToString Then
-                    Me.mControlProvincia = DB.mDbLector.Item(3).ToString
-                    Me.mAnadeResidencia = True
-
-                End If
-
-
-                Me.GrabaXmlEspana(DB.mDbLector.Item(4).ToString.Trim, Format(DB.mDbLector.Item(0), "dd"), CInt(DB.mDbLector.Item("LLEGADAS")), CInt(DB.mDbLector.Item("SALIDAS")), CInt(DB.mDbLector.Item("PERNOCTACIONES")), mAnadeResidencia)
-                Me.ListBoxDebug.Items.Add(DB.mDbLector.Item(0).ToString.Trim & " " & DB.mDbLector.Item(1).ToString.Trim & " " & DB.mDbLector.Item(2).ToString.Trim & " " & DB.mDbLector.Item(3).ToString.PadRight(25, " ") & DB.mDbLector.Item(4).ToString.Trim & " " & DB.mDbLector.Item("LLEGADAS").ToString.PadLeft(3, " ") & " " & DB.mDbLector.Item("SALIDAS").ToString.PadLeft(3, " ") & " " & DB.mDbLector.Item("PERNOCTACIONES").ToString.PadLeft(3, " ") & " Repernoctaciones = " & Me.Mpernoctaciones)
-
-                If hayerror Then
-                    Exit While
-                End If
             End While
 
             DB.mDbLector.Close()
@@ -469,31 +472,35 @@ Public Class Istac
 
             While DB.mDbLector.Read
 
+                If CDate(DB.mDbLector.Item("EDTA_DATA")).Month = Me.DateTimePickerHasta.Value.Month Then
 
 
-                If mPrimerRegistro Then
-                    mPrimerRegistro = False
-                    Me.mControlProvincia = DB.mDbLector.Item("NACI_CODI")
-                    Me.mAnadeResidencia = True
-                    Me.mControlResidencia = 0
 
-                Else
-                    Me.mControlResidencia = 1
+                    If mPrimerRegistro Then
+                        mPrimerRegistro = False
+                        Me.mControlProvincia = DB.mDbLector.Item("NACI_CODI")
+                        Me.mAnadeResidencia = True
+                        Me.mControlResidencia = 0
+
+                    Else
+                        Me.mControlResidencia = 1
+                    End If
+
+                    If Me.mControlProvincia <> DB.mDbLector.Item("NACI_CODI") Then
+                        Me.mControlProvincia = DB.mDbLector.Item("NACI_CODI")
+                        Me.mAnadeResidencia = True
+
+                    End If
+
+
+                    Me.GrabaXmlOtros(DB.mDbLector.Item("NACI_CODI").ToString.Trim, Format(DB.mDbLector.Item(0), "dd"), CInt(DB.mDbLector.Item("LLEGADAS")), CInt(DB.mDbLector.Item("SALIDAS")), CInt(DB.mDbLector.Item("PERNOCTACIONES")), mAnadeResidencia)
+                    Me.ListBoxDebug.Items.Add(DB.mDbLector.Item(0).ToString.Trim & " " & DB.mDbLector.Item(1).ToString.Trim & " " & DB.mDbLector.Item(2).ToString.Trim & " " & DB.mDbLector.Item(3).ToString.PadRight(25, " ") & DB.mDbLector.Item(4).ToString.Trim & " " & DB.mDbLector.Item("LLEGADAS").ToString.PadLeft(3, " ") & " " & DB.mDbLector.Item("SALIDAS").ToString.PadLeft(3, " ") & " " & DB.mDbLector.Item("PERNOCTACIONES").ToString.PadLeft(3, " ") & " Repernoctaciones = " & Me.Mpernoctaciones)
+
+                    If hayerror Then
+                        Exit While
+                    End If
                 End If
 
-                If Me.mControlProvincia <> DB.mDbLector.Item("NACI_CODI") Then
-                    Me.mControlProvincia = DB.mDbLector.Item("NACI_CODI")
-                    Me.mAnadeResidencia = True
-
-                End If
-
-
-                Me.GrabaXmlOtros(DB.mDbLector.Item("NACI_CODI").ToString.Trim, Format(DB.mDbLector.Item(0), "dd"), CInt(DB.mDbLector.Item("LLEGADAS")), CInt(DB.mDbLector.Item("SALIDAS")), CInt(DB.mDbLector.Item("PERNOCTACIONES")), mAnadeResidencia)
-                Me.ListBoxDebug.Items.Add(DB.mDbLector.Item(0).ToString.Trim & " " & DB.mDbLector.Item(1).ToString.Trim & " " & DB.mDbLector.Item(2).ToString.Trim & " " & DB.mDbLector.Item(3).ToString.PadRight(25, " ") & DB.mDbLector.Item(4).ToString.Trim & " " & DB.mDbLector.Item("LLEGADAS").ToString.PadLeft(3, " ") & " " & DB.mDbLector.Item("SALIDAS").ToString.PadLeft(3, " ") & " " & DB.mDbLector.Item("PERNOCTACIONES").ToString.PadLeft(3, " ") & " Repernoctaciones = " & Me.Mpernoctaciones)
-
-                If hayerror Then
-                    Exit While
-                End If
             End While
 
             DB.mDbLector.Close()
@@ -518,6 +525,8 @@ Public Class Istac
     Private Sub ButtonProcesar_Click(sender As Object, e As EventArgs) Handles ButtonProcesar.Click
         Try
             Me.Cursor = Cursors.AppStarting
+            Me.ListBoxDebug.Items.Clear()
+            Me.ListBoxDebug.Update()
 
             'file
             file = My.Computer.FileSystem.OpenTextFileWriter("c:\TEMPORAL\test.XML", False)
