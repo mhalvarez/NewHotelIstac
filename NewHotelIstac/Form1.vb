@@ -198,8 +198,8 @@ Public Class Istac
             SQL += "                    GROUP BY E.EDTA_DATA, R.NACI_CODI, NVL (C.PROV_CODI, '00') ,PROV_DESC,PROV_COOF  ) "
             SQL += "          GROUP BY RESE_DAEN, NACI_CODI, PROV_CODI  ,PROV_DESC,PROV_COOF) "
             SQL += "          WHERE NACI_CODI =  '" & Me.TextBoxPais.Text & "'"
-            SQL += "GROUP BY EDTA_DATA, NACI_CODI, PROV_CODI ,PROV_DESC,PROV_COOF "
-            SQL += "ORDER BY  NACI_CODI, PROV_CODI,EDTA_DATA "
+            SQL += " GROUP BY EDTA_DATA, NACI_CODI, PROV_CODI ,PROV_DESC,PROV_COOF "
+            SQL += " ORDER BY  NACI_CODI, PROV_CODI,EDTA_DATA "
 
 
 
@@ -221,7 +221,9 @@ Public Class Istac
 
 
 
-
+            '20180515
+            Me.mPrimerRegistro = True
+            '
 
             While DB.mDbLector.Read
                 If CDate(DB.mDbLector.Item("EDTA_DATA")).Month = Me.DateTimePickerHasta.Value.Month Then
@@ -446,8 +448,8 @@ Public Class Istac
             SQL += "                    GROUP BY E.EDTA_DATA, R.NACI_CODI, NVL (C.PROV_CODI, '00') ,PROV_DESC,PROV_COOF  ) "
             SQL += "          GROUP BY RESE_DAEN, NACI_CODI, PROV_CODI  ,PROV_DESC,PROV_COOF) "
             SQL += "          WHERE NACI_CODI <>  '" & Me.TextBoxPais.Text & "'"
-            SQL += "GROUP BY EDTA_DATA, NACI_CODI, PROV_CODI ,PROV_DESC,PROV_COOF "
-            SQL += "ORDER BY  NACI_CODI, PROV_CODI,EDTA_DATA "
+            SQL += " GROUP BY EDTA_DATA, NACI_CODI, PROV_CODI ,PROV_DESC,PROV_COOF "
+            SQL += " ORDER BY  NACI_CODI, PROV_CODI,EDTA_DATA "
 
 
 
@@ -467,7 +469,9 @@ Public Class Istac
 
             DB.TraerLector(SQL)
 
-
+            '20180515
+            Me.mPrimerRegistro = True
+            '
 
 
             While DB.mDbLector.Read
@@ -508,10 +512,12 @@ Public Class Istac
             'XML
             '  writer.WriteEndElement()
 
+            '20180515
+            Me.ListBoxDebug.Items.Add("cierra residencia")
+            file.WriteLine("</RESIDENCIA>")
+            '
             Me.ListBoxDebug.Items.Add("close document")
             ' Fin de ultima resdiencia 
-            '    file.WriteLine("</RESIDENCIA>")
-
 
 
 
@@ -688,10 +694,26 @@ Public Class Istac
 
     Private Sub Istac_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
+
+
+            '   Dim s As String = "201208"
+            Dim s As String
+            If Now.Month > 1 Then
+                s = Now.Year & (Now.Month - 1).ToString.PadLeft(2, "0")
+            Else
+                s = Now.Year - 1 & "12"
+            End If
+
+            Dim firstDay = Date.ParseExact(s, "yyyyMM", Nothing)
+            Dim lastDay = firstDay.AddMonths(1).AddDays(-1)
+            Dim year = firstDay.Year
+
+            Me.DateTimePickerDesde.Value = CDate(Format(firstDay, "dd/MM/yyyy"))
+            Me.DateTimePickerHasta.Value = CDate(Format(lastDay, "dd/MM/yyyy"))
+        Catch ex As Exception
+            MsgBox(ex.Message)
             Me.DateTimePickerDesde.Value = Now
             Me.DateTimePickerHasta.Value = Now
-        Catch ex As Exception
-
         End Try
     End Sub
 End Class
